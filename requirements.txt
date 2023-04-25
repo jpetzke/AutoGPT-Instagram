@@ -2,8 +2,8 @@ black
 isort
 flake8
 pylint
-abstract-singleton
 wheel
 setuptools
 build
 twine
+instabot

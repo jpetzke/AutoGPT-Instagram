@@ -1,8 +1,8 @@
-"""This is a template for Auto-GPT plugins."""
 import abc
+import os
 from typing import Any, Dict, List, Optional, Tuple, TypeVar, TypedDict
 
-from abstract_singleton import AbstractSingleton, Singleton
+from auto_gpt_plugin_template import AutoGPTPluginTemplate
 
 PromptGenerator = TypeVar("PromptGenerator")
 
@@ -12,16 +12,19 @@ class Message(TypedDict):
     content: str
 
 
-class AutoGPTPluginTemplate(AbstractSingleton, metaclass=Singleton):
+class AutoGPT_Instagram(AutoGPTPluginTemplate):
     """
-    This is a template for Auto-GPT plugins.
+    This is a plugin for Auto-GPT which enables access to Instagram.
     """
 
     def __init__(self):
         super().__init__()
-        self._name = "Auto-GPT-Plugin-Template"
+        self._name = "AutoGPT-Instagram"
         self._version = "0.1.0"
-        self._description = "This is a template for Auto-GPT plugins."
+        self._description = "This is a plugin for Auto-GPT which enables access to Instagram."
+
+        self.instagram_username = os.environ.get("INSTAGRAM_USERNAME")
+        self.instagram_password = os.environ.get("INSTAGRAM_PASSWORD")
 
     @abc.abstractmethod
     def can_handle_on_response(self) -> bool:
@@ -44,7 +47,7 @@ class AutoGPTPluginTemplate(AbstractSingleton, metaclass=Singleton):
 
         Returns:
             bool: True if the plugin can handle the post_prompt method."""
-        return False
+        return True
 
     @abc.abstractmethod
     def post_prompt(self, prompt: PromptGenerator) -> PromptGenerator:
@@ -57,7 +60,15 @@ class AutoGPTPluginTemplate(AbstractSingleton, metaclass=Singleton):
         Returns:
             PromptGenerator: The prompt generator.
         """
-        pass
+        
+
+        from .instagram import post_instagram_photo
+        prompt.add_command(
+            "post_instagram_photo",
+            "Post a photo to Instagram with a caption.",
+            {"photo_path": "The path to the photo.", "caption": "The caption for the photo."},
+            post_instagram_photo,
+        )
 
     @abc.abstractmethod
     def can_handle_on_planning(self) -> bool:
