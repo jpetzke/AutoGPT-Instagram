@@ -1,7 +1,5 @@
-# Auto-GPT-Plugin-Template
-A starting point for developing your own external plug-in for Auto-GPT
-
-# **If you want your plugin to live within the codebase, use the example in the [plugins repo](https://github.com/Significant-Gravitas/Auto-GPT-Plugins) instead**
+# AutGPT-Instagram
+A plugin for AutoGPT which enables access to Instagram.
 
 ### Plugin Installation Steps
 
@@ -30,4 +28,8 @@ A starting point for developing your own external plug-in for Auto-GPT
    ALLOWLISTED_PLUGINS=example-plugin1,example-plugin2,example-plugin3
    ```
 
-   If the plugin is not allowlisted, you will be warned before it's loaded.
+6. **Add Instagram cretentials to env file: **
+   ```
+   INSTAGRAM_USERNAME=username
+   INSTAGRAM_PASSWORD=password
+   ```
