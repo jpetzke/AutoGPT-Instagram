@@ -1,10 +1,17 @@
 import instabot
 from . import AutoGPT_Instagram
-
-plugin = AutoGPT_Instagram()
+import os
 
 bot = instabot.Bot()
-bot.login(username=plugin.instagram_username, password=plugin.instagram_password)
+
+def login_instagram(username, password) -> bool:
+    """Login to Instagram.
+
+    Returns:
+        bool: True if the login was successful.
+    """
+
+    return bot.login(username=username, password=password)
 
 
 def post_instagram_photo(photo_path: str, caption: str) -> str:
@@ -19,7 +26,16 @@ def post_instagram_photo(photo_path: str, caption: str) -> str:
         str: The URL of the photo.
     """
 
-    bot.upload_photo(photo_path, caption=caption)
-    return f"Posted photo to Instagram: {bot.last_media_id}"
+    path = os.path.join("auto_gpt_workspace", photo_path)
+
+    response = bot.upload_photo(path, caption=caption)
+
+    os.rename(path, path.removesuffix(".REMOVE_ME"))
+
+    if not response:
+        return "Failed to post photo to Instagram."
+
+    print(response)
+    return f"Posted photo to Instagram. Url=https://www.instagram.com/p/{response['media']['code']}"
 
 
