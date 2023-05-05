@@ -1,6 +1,7 @@
 import instabot
 from . import AutoGPT_Instagram
 import os
+import requests
 
 bot = instabot.Bot()
 
@@ -39,3 +40,41 @@ def post_instagram_photo(photo_path: str, caption: str) -> str:
     return f"Posted photo to Instagram. Url=https://www.instagram.com/p/{response['media']['code']}"
 
 
+
+def search_instagram_users(query: str):
+    url = f"https://www.instagram.com/web/search/topsearch/?query={query}"
+    response = requests.get(url)
+    response_json = response.json()
+    users = response_json['users']
+    result = []
+    for user in users:
+        user_info = {
+            'username': user['user']['username'],
+            'full_name': user['user']['full_name'],
+            'is_private': user['user']['is_private'],
+            'is_verified': user['user']['is_verified'],
+        }
+        result.append(user_info)
+    
+    # Sort the list alphabetically by username
+    result = sorted(result, key=lambda x: (x['username']))
+
+    # Put verified users first
+    result = sorted(result, key=lambda x: (x['is_verified']), reverse=True)
+
+
+    return result[:20]
+
+
+def follow_instagram_user(username: str):
+    if bot.follow(username):
+        return f"Followed {username}"
+    else:
+        return f"Failed to follow {username}"
+    
+    
+def unfollow_instagram_user(username: str):
+    if bot.unfollow(username):
+        return f"Unfollowed {username}"
+    else:
+        return f"Failed to unfollow {username}"

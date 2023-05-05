@@ -69,13 +69,37 @@ class AutoGPT_Instagram(AutoGPTPluginTemplate):
         if not self.activate_plugin:
             return prompt
 
-        from .instagram import post_instagram_photo
+        from .instagram import post_instagram_photo, search_instagram_users
+        from .instagram import follow_instagram_user, unfollow_instagram_user
         prompt.add_command(
             "post_instagram_photo",
             "Post a photo to Instagram with a caption.",
             {"photo_path": "The path to the photo.", "caption": "The caption for the photo."},
             post_instagram_photo,
-        )
+            )
+        
+        prompt.add_command(
+            "search_instagram_users",
+            "Search for Instagram users.",
+            {"query": "The query to search for."},
+            search_instagram_users,
+            )
+        
+        prompt.add_command(
+            "follow_instagram_user",
+            "Follow an Instagram user.",
+            {"username": "The username of the user to follow."},
+            follow_instagram_user,
+            )
+        
+        prompt.add_command(
+            "unfollow_instagram_user",
+            "Unfollow an Instagram user.",
+            {"username": "The username of the user to unfollow."},
+            unfollow_instagram_user,
+            )
+
+
 
         return prompt
  
