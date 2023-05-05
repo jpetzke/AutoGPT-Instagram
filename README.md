@@ -3,8 +3,8 @@ A plugin for AutoGPT which enables access to Instagram.
 
 ## Features
 - [x] Post Instagram Pictures
-- [] Search for users
-- [] Follow/Unfollow users
+- [ ] Search for users
+- [ ] Follow/Unfollow users
 
 ### Plugin Installation Steps
 
